@@ -21,11 +21,51 @@ class _PosScreenState extends State<PosScreen> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: const Color.fromARGB(255, 248, 248, 248),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: !context.isDesktop
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 8.0, right: 12.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  maximumSize: Size(context.width, 200),
+                  minimumSize: Size(context.width, 45),
+                  foregroundColor: const Color(0xFFFFFFFF),
+                  backgroundColor: const Color(0xFF319626),
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        8), // Adjust this value for less/more radius
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OrderPage(
+                        child: orderTotals(),
+                      ),
+                    ),
+                  );
+                },
+                child: const Text("Cart"),
+              ),
+            )
+          : const SizedBox.shrink(),
       appBar: AppBar(
+        leadingWidth: context.isDesktop ? 0 : 50,
+        title: context.isDesktop
+            ? topMenu(
+                title: 'Lorem Restaurant',
+                subTitle: '20 October 2022',
+                action: search(),
+              )
+            : const SizedBox.shrink(),
         backgroundColor: const Color.fromARGB(255, 248, 248, 248),
         leading: IconButton(
           padding: const EdgeInsets.all(0),
-          icon: logo(), // Custom logo widget
+          icon: context.isDesktop
+              ? const SizedBox.shrink()
+              : logo(), // Custom logo widget
           onPressed: () {
             scaffoldKey.currentState?.openDrawer(); // Open drawer
           },
@@ -59,17 +99,14 @@ class _PosScreenState extends State<PosScreen> {
           flex: 14,
           child: Column(
             children: [
-              topMenu(
-                title: 'Lorem Restaurant',
-                subTitle: '20 October 2022',
-                action: search(),
-              ),
               topTab(),
               productGrid(context),
             ],
           ),
         ),
-        Expanded(flex: 1, child: Container()),
+        const SizedBox(
+          width: 10,
+        ),
         orderTotals(),
       ],
     );
@@ -138,7 +175,7 @@ class _PosScreenState extends State<PosScreen> {
 
     switch (_selectedGridOption) {
       case 1: // 2 columns
-        crossAxisCount = (context.isDesktop|| context.isTablet) ? 4 : 2;
+        crossAxisCount = (context.isDesktop || context.isTablet) ? 4 : 2;
         childAspectRatio = context.isTablet ? (1 / 1.4) : (1);
         break;
       case 2: // 4 columns
@@ -146,7 +183,7 @@ class _PosScreenState extends State<PosScreen> {
         childAspectRatio = context.isDesktop ? (1 / 1.2) : (1 / 1.4);
         break;
       default: // 1 column
-        crossAxisCount = (context.isDesktop|| context.isTablet) ? 2 : 1;
+        crossAxisCount = (context.isDesktop || context.isTablet) ? 2 : 1;
         childAspectRatio = 1;
         break;
     }
@@ -253,6 +290,7 @@ class _PosScreenState extends State<PosScreen> {
           topMenu(title: 'Order', subTitle: 'Table 8', action: Container()),
           const SizedBox(height: 20),
           Expanded(
+            flex: 3,
             child: ListView(
               children: [
                 _itemOrder(
@@ -279,6 +317,7 @@ class _PosScreenState extends State<PosScreen> {
             ),
           ),
           Expanded(
+            flex: 2,
             child: Container(
               padding: const EdgeInsets.all(20),
               margin: const EdgeInsets.symmetric(vertical: 10),
@@ -301,7 +340,7 @@ class _PosScreenState extends State<PosScreen> {
                               color: Color(0xFF474747))),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -315,11 +354,14 @@ class _PosScreenState extends State<PosScreen> {
                               color: Color(0xFF474747))),
                     ],
                   ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    height: 2,
-                    width: double.infinity,
-                    color: const Color(0xFFFFFFFF),
+                  // Container(
+                  //   margin: const EdgeInsets.symmetric(vertical: 20),
+                  //   height: 2,
+                  //   width: double.infinity,
+                  //   color: const Color(0xFFFFFFFF),
+                  // ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -334,12 +376,13 @@ class _PosScreenState extends State<PosScreen> {
                               color: Color(0xFF474747))),
                     ],
                   ),
-                  const SizedBox(height: 30),
-                  Expanded(
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    height: 40,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         foregroundColor: const Color(0xFFFFFFFF),
-                        backgroundColor: const Color(0xFF094F90),
+                        backgroundColor: const Color(0xFF319626),
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8)),
@@ -509,5 +552,27 @@ class _PosScreenState extends State<PosScreen> {
         ],
       ),
     );
+  }
+}
+
+class OrderPage extends StatefulWidget {
+  final Widget child; // Use Widget instead of Expanded
+
+  const OrderPage({super.key, required this.child});
+
+  @override
+  State<OrderPage> createState() => _OrderPageState();
+}
+
+class _OrderPageState extends State<OrderPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      
+      backgroundColor: const Color.fromARGB(255, 248, 248, 248),
+        body: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: widget.child,
+    )); // Remove the const keyword
   }
 }
