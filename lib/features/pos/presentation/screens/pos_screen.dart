@@ -14,7 +14,7 @@ class _PosScreenState extends State<PosScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   int _selectedGridOption =
-      0; // 0 for 1 column, 1 for 2 columns, 2 for 4 columns
+      0; // 0 for 1 column, 1 for 2 columns, 2 for 4 column
 
   @override
   Widget build(BuildContext context) {
