@@ -10,11 +10,11 @@ Row desktopView(BuildContext context) {
         flex: 14,
         child: Column(
           children: [
-            _topMenu(
-              title: 'Lorem Restourant',
-              subTitle: '20 October 2022',
-              action: _search(),
-            ),
+            // _topMenu(
+            //   title: 'Lorem Restourant',
+            //   subTitle: '20 October 2022',
+            //   action: _search(),
+            // ),
             topTab(),
             productGrid(context)
           ],
@@ -89,11 +89,11 @@ Expanded orderTotals() {
     flex: 5,
     child: Column(
       children: [
-        _topMenu(
-          title: 'Order',
-          subTitle: 'Table 8',
-          action: Container(),
-        ),
+        // _topMenu(
+        //   title: 'Order',
+        //   subTitle: 'Table 8',
+        //   action: Container(),
+        // ),
         const SizedBox(height: 20),
         Expanded(
           child: ListView(
@@ -471,7 +471,7 @@ Widget _itemTab(
   );
 }
 
-Widget _topMenu({
+Widget topMenu({
   required String title,
   required String subTitle,
   required Widget action,
@@ -508,7 +508,7 @@ Widget _topMenu({
   );
 }
 
-Widget _search() {
+Widget search() {
   return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       width: double.infinity,
