@@ -18,9 +18,9 @@ class _PosScreenState extends State<PosScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey, // Attach scaffoldKey here
-      backgroundColor: const Color(0xff17181f),
+      backgroundColor: const Color.fromARGB(255, 248, 248, 248),
       appBar: AppBar(
-        backgroundColor: const Color(0xff17181f),
+        backgroundColor: const Color.fromARGB(255, 248, 248, 248),
         leading: IconButton(
           padding: const EdgeInsets.all(0),
           icon: logo(), // Use your custom logo widget here

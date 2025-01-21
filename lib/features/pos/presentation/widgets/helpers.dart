@@ -131,7 +131,7 @@ Expanded orderTotals() {
             margin: const EdgeInsets.symmetric(vertical: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
-              color: const Color(0xff1f2029),
+              color: const Color(0xFFFFFFFF),
             ),
             child: Column(
               children: [
@@ -141,12 +141,14 @@ Expanded orderTotals() {
                     Text(
                       'Sub Total',
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF474747)),
                     ),
                     Text(
                       '\$40.32',
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF474747)),
                     ),
                   ],
                 ),
@@ -157,12 +159,14 @@ Expanded orderTotals() {
                     Text(
                       'Tax',
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF474747)),
                     ),
                     Text(
                       '\$4.32',
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF474747)),
                     ),
                   ],
                 ),
@@ -170,7 +174,7 @@ Expanded orderTotals() {
                   margin: const EdgeInsets.symmetric(vertical: 20),
                   height: 2,
                   width: double.infinity,
-                  color: Colors.white,
+                  color: const Color(0xFFFFFFFF),
                 ),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -178,20 +182,22 @@ Expanded orderTotals() {
                     Text(
                       'Total',
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF474747)),
                     ),
                     Text(
                       '\$44.64',
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF474747)),
                     ),
                   ],
                 ),
                 const SizedBox(height: 30),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.deepOrange,
+                    foregroundColor: const Color(0xFF474747),
+                    backgroundColor: const Color(0xFF094F90),
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -318,7 +324,7 @@ Widget _itemOrder({
     margin: const EdgeInsets.only(bottom: 10),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(14),
-      color: const Color(0xff1f2029),
+      color: const Color(0xFFFFFFFF),
     ),
     child: Row(
       children: [
@@ -343,7 +349,7 @@ Widget _itemOrder({
                 style: const TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Color(0xFF474747),
                 ),
               ),
               const SizedBox(height: 10),
@@ -352,7 +358,7 @@ Widget _itemOrder({
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Color(0xFF474747),
                 ),
               )
             ],
@@ -363,7 +369,7 @@ Widget _itemOrder({
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Color(0xFF474747),
           ),
         ),
       ],
@@ -382,7 +388,7 @@ Widget _item({
     padding: const EdgeInsets.all(12),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(18),
-      color: const Color(0xff1f2029),
+      color: const Color(0xFFFFFFFF),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -402,7 +408,7 @@ Widget _item({
         Text(
           title,
           style: const TextStyle(
-            color: Colors.white,
+            color: Color(0xFF474747),
             fontWeight: FontWeight.bold,
             fontSize: 14,
           ),
@@ -414,14 +420,14 @@ Widget _item({
             Text(
               price,
               style: const TextStyle(
-                color: Colors.deepOrange,
+                color: Color(0xFF094F90),
                 fontSize: 20,
               ),
             ),
             Text(
               item,
               style: const TextStyle(
-                color: Colors.white60,
+                color: Color(0xFF474747),
                 fontSize: 12,
               ),
             ),
@@ -440,23 +446,23 @@ Widget _itemTab(
     padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
-      color: const Color(0xff1f2029),
+      color: const Color(0xFFFFFFFF),
       border: isActive
-          ? Border.all(color: Colors.deepOrangeAccent, width: 3)
-          : Border.all(color: const Color(0xff1f2029), width: 3),
+          ? Border.all(color: const Color(0xFF094F90), width: 3)
+          : Border.all(color: const Color.fromARGB(255, 175, 175, 175), width: 3),
     ),
     child: Row(
       children: [
         const Icon(
           Icons.food_bank,
-          color: Colors.deepOrangeAccent,
+          color: Color(0xFF094F90),
         ),
         const SizedBox(width: 8),
         Text(
           title,
           style: const TextStyle(
             fontSize: 14,
-            color: Colors.white,
+            color: Color(0xFF474747),
             fontWeight: FontWeight.bold,
           ),
         )
@@ -481,7 +487,7 @@ Widget _topMenu({
           Text(
             title,
             style: const TextStyle(
-              color: Colors.white,
+              color: Color(0xFF474747),
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -490,7 +496,7 @@ Widget _topMenu({
           Text(
             subTitle,
             style: const TextStyle(
-              color: Colors.white54,
+              color: Color(0xFF474747),
               fontSize: 10,
             ),
           ),
@@ -509,18 +515,18 @@ Widget _search() {
       height: 40,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),
-        color: const Color(0xff1f2029),
+        color: const Color(0xFFFFFFFF),
       ),
       child: const Row(
         children: [
           Icon(
             Icons.search,
-            color: Colors.white54,
+            color: Color(0xFF474747),
           ),
           SizedBox(width: 10),
           Text(
             'Search menu here...',
-            style: TextStyle(color: Colors.white54, fontSize: 11),
+            style: TextStyle(color: Color(0xFF474747), fontSize: 11),
           )
         ],
       ));

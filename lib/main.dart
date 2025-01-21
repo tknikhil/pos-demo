@@ -35,7 +35,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff1f2029),
+      backgroundColor: const Color(0xFFFFFFFF),
       body: context.isDesktop ? desktopView(context) : mobileView(),
     );
   }
@@ -48,7 +48,7 @@ class _MainPageState extends State<MainPage> {
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(12), topRight: Radius.circular(12)),
-          color: Color(0xff17181f),
+          color: Color.fromARGB(255, 248, 248, 248),
         ),
         child: _pageView(),
       ),
@@ -84,7 +84,7 @@ class _MainPageState extends State<MainPage> {
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(12), topRight: Radius.circular(12)),
-          color: Color(0xff17181f),
+          color: Color.fromARGB(255, 248, 248, 248),
         ),
         child: _pageView(),
       ),
@@ -154,7 +154,7 @@ class SideMenu extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               color: pageActive == menu
-                  ? Colors.deepOrangeAccent
+                  ? const Color(0xFF094F90)
                   : Colors.transparent,
             ),
             duration: const Duration(milliseconds: 300),
@@ -163,12 +163,18 @@ class SideMenu extends StatelessWidget {
               children: [
                 Icon(
                   icon,
-                  color: Colors.white,
+                  color: pageActive == menu
+                      ? const Color(0xFFFFFFFF)
+                      : const Color(0xFF474747),
                 ),
                 const SizedBox(height: 5),
                 Text(
                   menu,
-                  style: const TextStyle(color: Colors.white, fontSize: 10),
+                  style: TextStyle(
+                      color: pageActive == menu
+                          ? const Color(0xFFFFFFFF)
+                          : const Color(0xFF474747),
+                      fontSize: 10),
                 ),
               ],
             ),
@@ -186,11 +192,11 @@ Widget logo() {
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: Colors.deepOrangeAccent,
+          color: const Color(0xFF094F90),
         ),
         child: const Icon(
           Icons.fastfood,
-          color: Colors.white,
+          color: Color(0xFFFFFFFF),
           size: 14,
         ),
       ),
@@ -198,7 +204,7 @@ Widget logo() {
       const Text(
         'POSFood',
         style: TextStyle(
-          color: Colors.white,
+          color: Color(0xFFFFFFFF),
           fontSize: 8,
           fontWeight: FontWeight.bold,
         ),
