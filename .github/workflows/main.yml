@@ -42,7 +42,7 @@ jobs:
 
       # Push to Debug
       - name: Push to Debug
-        uses: ncipollo/debug-action@v1
+        uses: ncipollo/release-action@v1
         with:
           artifacts: |
             build/app/outputs/apk/debug/*,
