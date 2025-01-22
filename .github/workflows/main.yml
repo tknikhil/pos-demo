@@ -5,11 +5,14 @@ on:
   push:
     branches:
       - master
+
 name: "Build & Release"
+
 jobs:
   build:
     name: Build & Release
     runs-on: windows-latest
+
     steps:
       # Checkout repository
       - uses: actions/checkout@v3
@@ -50,7 +53,7 @@ jobs:
       - name: Install Android SDK Platforms and Tools
         run: |
           $sdkmanager = "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
-          $arguments = "platforms;android-33", "build-tools;33.0.2"
+          $arguments = "platforms;android-35", "build-tools;35.0.0"
           & $sdkmanager $arguments
 
       # Clean Environment
