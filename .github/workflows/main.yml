@@ -55,9 +55,10 @@ jobs:
           $sdkmanager = "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           $arguments = "platforms;android-35", "build-tools;35.0.0"
           & $sdkmanager $arguments
-          
-      # Accept Android SDK licenses
+
+      # Accept Android SDK Licenses
       - name: Accept Android SDK Licenses
+        shell: bash
         run: |
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
 
