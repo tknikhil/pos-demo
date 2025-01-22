@@ -67,10 +67,10 @@ jobs:
           & "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat" --licenses | Out-Null
 
       # Clear SDK Manager Cache
-      - name: Clear SDK Manager Cache
-        run: |
-          Remove-Item -Recurse -Force "$env:ANDROID_HOME\repository"
-          Remove-Item -Recurse -Force "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat"
+      # - name: Clear SDK Manager Cache
+      #   run: |
+      #     Remove-Item -Recurse -Force "$env:ANDROID_HOME\repository"
+      #     Remove-Item -Recurse -Force "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat"
 
       # Accept Android SDK Licenses
       - name: Accept Android SDK Licenses
