@@ -26,6 +26,11 @@ jobs:
           channel: 'stable'
           architecture: x64
 
+      # Ensure ANDROID_HOME directory exists
+      - name: Ensure ANDROID_HOME directory exists
+        run: |
+          if (-not (Test-Path "$env:ANDROID_HOME")) { New-Item -ItemType Directory -Force -Path "$env:ANDROID_HOME" }
+
       # Install Android Command-Line Tools
       - name: Install Android Command-Line Tools
         run: |
@@ -46,7 +51,7 @@ jobs:
         run: |
           $sdkmanager = "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           $arguments = "platforms;android-33", "build-tools;33.0.2"
-          & $sdkmanager $arguments | Out-String
+          & $sdkmanager $arguments
 
       # Clean Environment
       - name: Clean Environment
