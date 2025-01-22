@@ -85,8 +85,8 @@ jobs:
       #   run: flutter pub get
 
       # Build Android APK (Release version, change flags if necessary)
-      - name: Build Android APK
-        run: flutter build apk --release --split-per-abi
+      # - name: Build Android APK
+      #   run: flutter build apk --release --split-per-abi
 
       # Build Windows
       - name: Build Window exe
