@@ -1,18 +1,26 @@
+// Root build.gradle file
+buildscript {
+    repositories {
+        google()          // Google repository for Android tools
+        mavenCentral()    // Maven central repository
+    }
+    dependencies {
+        // Correctly specify the Android Gradle Plugin version
+        classpath 'com.android.tools.build:gradle:8.0.2'  // Android Gradle Plugin
+    }
+}
+
 allprojects {
     repositories {
         google()
         mavenCentral()
     }
-     dependencies {
-        classpath 'com.android.tools.build:gradle:8.0.2'  // Adjust this version as needed
-    }
 }
 
 rootProject.buildDir = "../build"
+
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
     project.evaluationDependsOn(":app")
 }
 
