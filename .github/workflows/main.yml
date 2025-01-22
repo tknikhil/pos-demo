@@ -32,8 +32,14 @@ jobs:
           mkdir -p "$ANDROID_HOME/cmdline-tools"
           curl -o commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-win-8512546_latest.zip
           Expand-Archive -Path commandlinetools.zip -DestinationPath "$ANDROID_HOME/cmdline-tools"
+          
+          # Get the directory and rename it
           $dir = Get-ChildItem -Path "$ANDROID_HOME/cmdline-tools" | Where-Object { $_.Name -ne "latest" } | Select-Object -First 1
-          Rename-Item -Path "$dir.FullName" -NewName "latest"
+          if ($dir) {
+            Rename-Item -Path $dir.FullName -NewName "latest"
+          } else {
+            Write-Host "Directory for Android command line tools not found."
+          }
 
       # Install Android SDK Platforms and Tools
       - name: Install Android SDK Platforms and Tools
