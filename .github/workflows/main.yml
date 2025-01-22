@@ -30,68 +30,79 @@ jobs:
           architecture: x64
 
       # Ensure ANDROID_HOME directory exists and set it
-      - name: Ensure ANDROID_HOME directory exists
-        run: |
-          if (-not (Test-Path "$env:ANDROID_HOME")) { 
-            New-Item -ItemType Directory -Force -Path "$env:ANDROID_HOME" 
-          }
+      # - name: Ensure ANDROID_HOME directory exists
+      #   run: |
+      #     if (-not (Test-Path "$env:ANDROID_HOME")) { 
+      #       New-Item -ItemType Directory -Force -Path "$env:ANDROID_HOME" 
+      #     }
 
       # Install Android Command-Line Tools
-      - name: Install Android Command-Line Tools
-        run: |
-          # Check if cmdline-tools directory exists, and create it if it doesn't
-          if (-not (Test-Path "$env:ANDROID_HOME\cmdline-tools")) {
-            mkdir -p "$env:ANDROID_HOME\cmdline-tools"
-          }
+      # - name: Install Android Command-Line Tools
+      #   run: |
+      #     # Check if cmdline-tools directory exists, and create it if it doesn't
+      #     if (-not (Test-Path "$env:ANDROID_HOME\cmdline-tools")) {
+      #       mkdir -p "$env:ANDROID_HOME\cmdline-tools"
+      #     }
 
-          # Download and extract the command-line tools
-          curl -o commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-win-8512546_latest.zip
-          Expand-Archive -Path commandlinetools.zip -DestinationPath "$env:ANDROID_HOME\cmdline-tools"
+      #     # Download and extract the command-line tools
+      #     curl -o commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-win-8512546_latest.zip
+      #     Expand-Archive -Path commandlinetools.zip -DestinationPath "$env:ANDROID_HOME\cmdline-tools"
           
-          # Verify the extracted files
-          Get-ChildItem "$env:ANDROID_HOME\cmdline-tools/latest/bin"
+      #     # Verify the extracted files
+      #     Get-ChildItem "$env:ANDROID_HOME\cmdline-tools/latest/bin"
           
-          # If "latest" directory does not exist, rename the extracted directory
-          $dir = Get-ChildItem -Path "$env:ANDROID_HOME\cmdline-tools" | Where-Object { $_.Name -ne "latest" } | Select-Object -First 1
-          if ($dir) {
-            $latestDirPath = "$env:ANDROID_HOME\cmdline-tools\latest"
-            if (-not (Test-Path $latestDirPath)) {
-              Rename-Item -Path $dir.FullName -NewName "latest"
-            } else {
-              Write-Host "The 'latest' directory already exists. Skipping renaming."
-            }
-          } else {
-            Write-Host "Directory for Android command line tools not found."
-          }
+      #     # If "latest" directory does not exist, rename the extracted directory
+      #     $dir = Get-ChildItem -Path "$env:ANDROID_HOME\cmdline-tools" | Where-Object { $_.Name -ne "latest" } | Select-Object -First 1
+      #     if ($dir) {
+      #       $latestDirPath = "$env:ANDROID_HOME\cmdline-tools\latest"
+      #       if (-not (Test-Path $latestDirPath)) {
+      #         Rename-Item -Path $dir.FullName -NewName "latest"
+      #       } else {
+      #         Write-Host "The 'latest' directory already exists. Skipping renaming."
+      #       }
+      #     } else {
+      #       Write-Host "Directory for Android command line tools not found."
+      #     }
 
       # Install Android SDK Platforms and Tools (Use Build-Tools 30, adjust if needed)
-      - name: Install Android SDK Platforms and Tools
-        run: |
-          & "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat" "platforms;android-35" "build-tools;30.0.0"
-          & "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat" --licenses | Out-Null
+      # - name: Install Android SDK Platforms and Tools
+      #   run: |
+      #     & "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat" "platforms;android-35" "build-tools;30.0.0"
+      #     & "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat" --licenses | Out-Null
 
       # Clean Environment (Remove Gradle and Flutter cache files to ensure fresh build)
-      - name: Clean Environment
-        run: |
-          flutter clean
-          if (Test-Path "$env:USERPROFILE\.gradle\caches") { Remove-Item -Recurse -Force "$env:USERPROFILE\.gradle\caches" }
-          if (Test-Path "$env:USERPROFILE\.gradle\daemon") { Remove-Item -Recurse -Force "$env:USERPROFILE\.gradle\daemon" }
-          if (Test-Path "$env:USERPROFILE\.gradle\native") { Remove-Item -Recurse -Force "$env:USERPROFILE\.gradle\native" }
-          if (Test-Path "$env:USERPROFILE\.gradle\wrapper") { Remove-Item -Recurse -Force "$env:USERPROFILE\.gradle\wrapper" }
-          if (Test-Path ".\packages\flutter_tools\gradle\build") { Remove-Item -Recurse -Force ".\packages\flutter_tools\gradle\build" }
+      # - name: Clean Environment
+      #   run: |
+      #     flutter clean
+      #     if (Test-Path "$env:USERPROFILE\.gradle\caches") { Remove-Item -Recurse -Force "$env:USERPROFILE\.gradle\caches" }
+      #     if (Test-Path "$env:USERPROFILE\.gradle\daemon") { Remove-Item -Recurse -Force "$env:USERPROFILE\.gradle\daemon" }
+      #     if (Test-Path "$env:USERPROFILE\.gradle\native") { Remove-Item -Recurse -Force "$env:USERPROFILE\.gradle\native" }
+      #     if (Test-Path "$env:USERPROFILE\.gradle\wrapper") { Remove-Item -Recurse -Force "$env:USERPROFILE\.gradle\wrapper" }
+      #     if (Test-Path ".\packages\flutter_tools\gradle\build") { Remove-Item -Recurse -Force ".\packages\flutter_tools\gradle\build" }
 
       # Fetch Flutter dependencies
-      - name: Get Flutter Dependencies
-        run: flutter pub get
+      # - name: Get Flutter Dependencies
+      #   run: flutter pub get
 
       # Build Android APK (Release version, change flags if necessary)
       - name: Build Android APK
         run: flutter build apk --release --split-per-abi
 
+      # Build Windows
+      - name: Build Window exe
+        run: flutter build windows --release
+
+      # Build Web
+      - name: Build Web
+        run: flutter build web --release
+
       # Push to Debug/Release (Adjust based on release flow)
       - name: Push to Debug
         uses: ncipollo/release-action@v1
         with:
-          artifacts: build/app/outputs/apk/release/*
+          artifacts: |
+            build/app/outputs/apk/release/*,
+            build/windows/runner/Release/*,
+            build/web/*
           tag: v1.0.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
