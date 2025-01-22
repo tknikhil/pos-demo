@@ -14,11 +14,11 @@ jobs:
       # Checkout repository
       - uses: actions/checkout@v3
 
-      # Setup Java environment
+      # Setup Java environment with Java 17
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '22'
+          java-version: '17'
 
       # Setup Flutter
       - uses: subosito/flutter-action@v2
@@ -26,7 +26,7 @@ jobs:
           channel: 'stable'
           architecture: x64
 
-      # Clean and prepare build environment
+      # Clean Environment
       - name: Clean Environment
         run: |
           flutter clean
