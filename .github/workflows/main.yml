@@ -44,10 +44,14 @@ jobs:
             mkdir -p "$env:ANDROID_HOME\cmdline-tools"
           }
 
+          # Download and extract the command-line tools
           curl -o commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-win-8512546_latest.zip
           Expand-Archive -Path commandlinetools.zip -DestinationPath "$env:ANDROID_HOME\cmdline-tools"
           
-          # Get the directory and rename it to "latest", but only if "latest" does not exist
+          # Verify the extracted files
+          Get-ChildItem "$env:ANDROID_HOME\cmdline-tools/latest/bin"
+          
+          # If "latest" directory does not exist, rename the extracted directory
           $dir = Get-ChildItem -Path "$env:ANDROID_HOME\cmdline-tools" | Where-Object { $_.Name -ne "latest" } | Select-Object -First 1
           if ($dir) {
             $latestDirPath = "$env:ANDROID_HOME\cmdline-tools\latest"
@@ -65,12 +69,6 @@ jobs:
         run: |
           & "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat" "platforms;android-35" "build-tools;30.0.0"
           & "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat" --licenses | Out-Null
-
-      # Clear SDK Manager Cache
-      # - name: Clear SDK Manager Cache
-      #   run: |
-      #     Remove-Item -Recurse -Force "$env:ANDROID_HOME\repository"
-      #     Remove-Item -Recurse -Force "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat"
 
       # Accept Android SDK Licenses
       - name: Accept Android SDK Licenses
