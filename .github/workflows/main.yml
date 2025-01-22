@@ -73,6 +73,10 @@ jobs:
           if (Test-Path "$env:USERPROFILE\.gradle\wrapper") { Remove-Item -Recurse -Force "$env:USERPROFILE\.gradle\wrapper" }
           if (Test-Path ".\packages\flutter_tools\gradle\build") { Remove-Item -Recurse -Force ".\packages\flutter_tools\gradle\build" }
 
+      # Flutter dependencies upgrade
+      - name: Flutter Upgrade
+        run: flutter upgrade
+
       # Fetch Flutter dependencies
       - name: Get Flutter Dependencies
         run: flutter pub get
