@@ -17,7 +17,7 @@ jobs:
       # Checkout repository
       - uses: actions/checkout@v3
 
-      # Setup Java environment with Java 17
+      # Setup Java environment with Java 21
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
@@ -60,12 +60,10 @@ jobs:
             Write-Host "Directory for Android command line tools not found."
           }
 
-
-
-      # Install Android SDK Platforms and Tools
+      # Install Android SDK Platforms and Tools (Updated to Build-Tools 30)
       - name: Install Android SDK Platforms and Tools
         run: |
-          & "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat" "platforms;android-35" "build-tools;35.0.0"
+          & "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat" "platforms;android-35" "build-tools;30.0.0"
           & "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat" --licenses | Out-Null
 
       # Clear SDK Manager Cache
