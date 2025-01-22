@@ -45,12 +45,17 @@ jobs:
           }
 
           curl -o commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-win-8512546_latest.zip
-          Expand-Archive -Path commandlinetools.zip -DestinationPath "$env:ANDROID_HOME/cmdline-tools"
+          Expand-Archive -Path commandlinetools.zip -DestinationPath "$env:ANDROID_HOME\cmdline-tools"
           
-          # Get the directory and rename it
+          # Get the directory and rename it to "latest", but only if "latest" does not exist
           $dir = Get-ChildItem -Path "$env:ANDROID_HOME\cmdline-tools" | Where-Object { $_.Name -ne "latest" } | Select-Object -First 1
           if ($dir) {
-            Rename-Item -Path $dir.FullName -NewName "latest"
+            $latestDirPath = "$env:ANDROID_HOME\cmdline-tools\latest"
+            if (-not (Test-Path $latestDirPath)) {
+              Rename-Item -Path $dir.FullName -NewName "latest"
+            } else {
+              Write-Host "The 'latest' directory already exists. Skipping renaming."
+            }
           } else {
             Write-Host "Directory for Android command line tools not found."
           }
