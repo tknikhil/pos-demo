@@ -32,17 +32,23 @@ jobs:
       # Ensure ANDROID_HOME directory exists
       - name: Ensure ANDROID_HOME directory exists
         run: |
-          if (-not (Test-Path "$env:ANDROID_HOME")) { New-Item -ItemType Directory -Force -Path "$env:ANDROID_HOME" }
+          if (-not (Test-Path "$env:ANDROID_HOME")) { 
+            New-Item -ItemType Directory -Force -Path "$env:ANDROID_HOME" 
+          }
 
       # Install Android Command-Line Tools
       - name: Install Android Command-Line Tools
         run: |
-          mkdir -p "$env:ANDROID_HOME/cmdline-tools"
+          # Check if cmdline-tools directory exists, and only create it if it doesn't
+          if (-not (Test-Path "$env:ANDROID_HOME\cmdline-tools")) {
+            mkdir -p "$env:ANDROID_HOME\cmdline-tools"
+          }
+
           curl -o commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-win-8512546_latest.zip
           Expand-Archive -Path commandlinetools.zip -DestinationPath "$env:ANDROID_HOME/cmdline-tools"
           
           # Get the directory and rename it
-          $dir = Get-ChildItem -Path "$env:ANDROID_HOME/cmdline-tools" | Where-Object { $_.Name -ne "latest" } | Select-Object -First 1
+          $dir = Get-ChildItem -Path "$env:ANDROID_HOME\cmdline-tools" | Where-Object { $_.Name -ne "latest" } | Select-Object -First 1
           if ($dir) {
             Rename-Item -Path $dir.FullName -NewName "latest"
           } else {
