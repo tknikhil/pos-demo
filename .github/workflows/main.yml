@@ -17,11 +17,11 @@ jobs:
       # Checkout repository
       - uses: actions/checkout@v3
 
-      # Setup Java environment with Java 21
+      # Setup Java environment with Java 17 (recommended for Android builds)
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '21'
+          java-version: '17'
 
       # Setup Flutter
       - uses: subosito/flutter-action@v2
@@ -29,7 +29,7 @@ jobs:
           channel: 'stable'
           architecture: x64
 
-      # Ensure ANDROID_HOME directory exists
+      # Ensure ANDROID_HOME directory exists and set it
       - name: Ensure ANDROID_HOME directory exists
         run: |
           if (-not (Test-Path "$env:ANDROID_HOME")) { 
@@ -39,7 +39,7 @@ jobs:
       # Install Android Command-Line Tools
       - name: Install Android Command-Line Tools
         run: |
-          # Check if cmdline-tools directory exists, and only create it if it doesn't
+          # Check if cmdline-tools directory exists, and create it if it doesn't
           if (-not (Test-Path "$env:ANDROID_HOME\cmdline-tools")) {
             mkdir -p "$env:ANDROID_HOME\cmdline-tools"
           }
@@ -64,21 +64,13 @@ jobs:
             Write-Host "Directory for Android command line tools not found."
           }
 
-      # Install Android SDK Platforms and Tools (Updated to Build-Tools 30)
+      # Install Android SDK Platforms and Tools (Use Build-Tools 30, adjust if needed)
       - name: Install Android SDK Platforms and Tools
         run: |
           & "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat" "platforms;android-35" "build-tools;30.0.0"
           & "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat" --licenses | Out-Null
 
-      # Accept Android SDK Licenses
-      # - name: Accept Android SDK Licenses
-      #   shell: bash
-      #   run: |
-      #     echo $ANDROID_HOME  # Check the ANDROID_HOME environment variable
-      #     ls -R $ANDROID_HOME/cmdline-tools  # List contents to verify sdkmanager's location
-      #     yes | ${ANDROID_HOME//\\//}/cmdline-tools/latest/bin/sdkmanager --licenses
-
-      # Clean Environment
+      # Clean Environment (Remove Gradle and Flutter cache files to ensure fresh build)
       - name: Clean Environment
         run: |
           flutter clean
@@ -92,14 +84,14 @@ jobs:
       - name: Get Flutter Dependencies
         run: flutter pub get
 
-      # Build Android (APK)
+      # Build Android APK (Release version, change flags if necessary)
       - name: Build Android APK
-        run: flutter build apk --debug --split-per-abi
+        run: flutter build apk --release --split-per-abi
 
-      # Push to Debug
+      # Push to Debug/Release (Adjust based on release flow)
       - name: Push to Debug
         uses: ncipollo/release-action@v1
         with:
-          artifacts: build/app/outputs/apk/debug/*
+          artifacts: build/app/outputs/apk/release/*
           tag: v1.0.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
