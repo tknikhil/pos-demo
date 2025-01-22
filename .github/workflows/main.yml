@@ -11,34 +11,46 @@ jobs:
     name: Build & Release
     runs-on: windows-latest
     steps:
+      # Checkout repository
       - uses: actions/checkout@v3
+
+      # Setup Java environment
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: '22'
+
+      # Setup Flutter
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           architecture: x64
 
-      # Build Android (APK)
-      - run: flutter build apk --debug --split-per-abi
+      # Clean and prepare build environment
+      - name: Clean Environment
+        run: |
+          flutter clean
+          if (Test-Path "$env:USERPROFILE\.gradle\caches") { Remove-Item -Recurse -Force "$env:USERPROFILE\.gradle\caches" }
+          if (Test-Path "$env:USERPROFILE\.gradle\daemon") { Remove-Item -Recurse -Force "$env:USERPROFILE\.gradle\daemon" }
+          if (Test-Path "$env:USERPROFILE\.gradle\native") { Remove-Item -Recurse -Force "$env:USERPROFILE\.gradle\native" }
+          if (Test-Path "$env:USERPROFILE\.gradle\wrapper") { Remove-Item -Recurse -Force "$env:USERPROFILE\.gradle\wrapper" }
+          if (Test-Path ".\packages\flutter_tools\gradle\build") { Remove-Item -Recurse -Force ".\packages\flutter_tools\gradle\build" }
 
-      # Build iOS
-      # - run: |
-      #     flutter build ios --no-codesign
-      #     cd build/ios/iphoneos
-      #     mkdir Payload
-      #     cd Payload
-      #     ln -s ../Runner.app
-      #     cd ..
-      #     zip -r app.ipa Payload
+      # Fetch Flutter dependencies
+      - name: Get Flutter Dependencies
+        run: flutter pub get
+
+      # Build Android (APK)
+      - name: Build Android APK
+        run: flutter build apk --debug --split-per-abi
 
       # Build Windows
-      - run: flutter build windows --debug
+      - name: Build Windows Executable
+        run: flutter build windows --debug
 
       # Build Web
-      - run: flutter build web --debug
+      - name: Build Web Application
+        run: flutter build web --debug
 
       # Push to Debug
       - name: Push to Debug
@@ -46,7 +58,6 @@ jobs:
         with:
           artifacts: |
             build/app/outputs/apk/debug/*,
-            build/ios/iphoneos/app.ipa,
             build/windows/runner/Debug/*,
             build/web/*
           tag: v1.0.${{ github.run_number }}
