@@ -21,7 +21,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '21'
+          java-version: '17'
 
       # Setup Flutter
       - uses: subosito/flutter-action@v2
@@ -34,32 +34,27 @@ jobs:
         run: |
           if (-not (Test-Path "$env:ANDROID_HOME")) { New-Item -ItemType Directory -Force -Path "$env:ANDROID_HOME" }
 
-      # Install Android Command-Line Tools
-      - name: Install Android Command-Line Tools
+      # Reinstall Android Command-Line Tools
+      - name: Reinstall Android Command-Line Tools
+        shell: pwsh
         run: |
-          if (-not (Test-Path "$env:ANDROID_HOME\cmdline-tools\latest")) { 
-            mkdir -p "$env:ANDROID_HOME\cmdline-tools\latest"
-            curl -o commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-win-8512546_latest.zip
-            Expand-Archive -Path commandlinetools.zip -DestinationPath "$env:ANDROID_HOME\cmdline-tools\latest"
-          } else {
-            Write-Host "Directory already exists: $env:ANDROID_HOME\cmdline-tools\latest"
+          if (Test-Path "$env:ANDROID_HOME\cmdline-tools") {
+            Remove-Item -Recurse -Force "$env:ANDROID_HOME\cmdline-tools"
           }
-
-      # Verify SDKManager Path
-      - name: Verify SDKManager Path
-        run: |
-          if (!(Test-Path "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat")) {
-            Write-Error "SDKManager not found at expected path: $env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat"
-            exit 1
-          }
+          mkdir -p "$env:ANDROID_HOME\cmdline-tools"
+          curl -o commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-win-8512546_latest.zip
+          Expand-Archive -Path commandlinetools.zip -DestinationPath "$env:ANDROID_HOME\cmdline-tools"
+          Rename-Item "$env:ANDROID_HOME\cmdline-tools\cmdline-tools" "$env:ANDROID_HOME\cmdline-tools\latest"
 
       # Install Android SDK Platforms and Tools
       - name: Install Android SDK Platforms and Tools
+        shell: pwsh
         run: |
           & "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat" "platforms;android-35" "build-tools;35.0.0"
 
       # Accept Android SDK Licenses
       - name: Accept Android SDK Licenses
+        shell: pwsh
         run: |
           & "$env:ANDROID_HOME\cmdline-tools\latest\bin\sdkmanager.bat" --licenses | Out-Null
 
@@ -72,10 +67,6 @@ jobs:
           if (Test-Path "$env:USERPROFILE\.gradle\native") { Remove-Item -Recurse -Force "$env:USERPROFILE\.gradle\native" }
           if (Test-Path "$env:USERPROFILE\.gradle\wrapper") { Remove-Item -Recurse -Force "$env:USERPROFILE\.gradle\wrapper" }
           if (Test-Path ".\packages\flutter_tools\gradle\build") { Remove-Item -Recurse -Force ".\packages\flutter_tools\gradle\build" }
-
-      # Flutter dependencies upgrade
-      - name: Flutter Upgrade
-        run: flutter upgrade
 
       # Fetch Flutter dependencies
       - name: Get Flutter Dependencies
