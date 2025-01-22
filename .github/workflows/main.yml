@@ -6,6 +6,8 @@ on:
     branches:
       - master
 
+name: "Build & Release"
+
 jobs:
   build:
     name: Build & Release
@@ -39,19 +41,19 @@ jobs:
           curl -o commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-win-8512546_latest.zip
           Expand-Archive -Path commandlinetools.zip -DestinationPath "$ANDROID_HOME/cmdline-tools"
           
-          # Rename the directory to 'latest'
+          # Get the directory and rename it
           $dir = Get-ChildItem -Path "$ANDROID_HOME/cmdline-tools" | Where-Object { $_.Name -ne "latest" } | Select-Object -First 1
           if ($dir) {
             Rename-Item -Path $dir.FullName -NewName "latest"
           } else {
-            Write-Host "Directory for Android command-line tools not found."
+            Write-Host "Directory for Android command line tools not found."
           }
 
       # Install Android SDK Platforms and Tools
       - name: Install Android SDK Platforms and Tools
         run: |
           $sdkmanager = "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
-          $arguments = "platforms;android-33", "build-tools;33.0.2"
+          $arguments = "platforms;android-35", "build-tools;35.0.0"
           & $sdkmanager $arguments
 
       # Clean Environment
