@@ -37,9 +37,13 @@ jobs:
       # Install Android Command-Line Tools
       - name: Install Android Command-Line Tools
         run: |
-          mkdir -p "$env:ANDROID_HOME\cmdline-tools\latest"
-          curl -o commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-win-8512546_latest.zip
-          Expand-Archive -Path commandlinetools.zip -DestinationPath "$env:ANDROID_HOME\cmdline-tools\latest"
+          if (-not (Test-Path "$env:ANDROID_HOME\cmdline-tools\latest")) { 
+            mkdir -p "$env:ANDROID_HOME\cmdline-tools\latest"
+            curl -o commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-win-8512546_latest.zip
+            Expand-Archive -Path commandlinetools.zip -DestinationPath "$env:ANDROID_HOME\cmdline-tools\latest"
+          } else {
+            Write-Host "Directory already exists: $env:ANDROID_HOME\cmdline-tools\latest"
+          }
 
       # Verify SDKManager Path
       - name: Verify SDKManager Path
