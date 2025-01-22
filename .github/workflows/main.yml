@@ -76,8 +76,9 @@ jobs:
       - name: Accept Android SDK Licenses
         shell: bash
         run: |
-          echo $ANDROID_HOME
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+          echo $ANDROID_HOME  # Check the ANDROID_HOME environment variable
+          ls -R $ANDROID_HOME/cmdline-tools  # List contents to verify sdkmanager's location
+          yes | ${ANDROID_HOME//\\//}/cmdline-tools/latest/bin/sdkmanager --licenses
 
       # Clean Environment
       - name: Clean Environment
