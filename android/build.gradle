@@ -4,7 +4,9 @@ buildscript {
         google()          // Google repository for Android tools
         mavenCentral()    // Maven central repository
     }
-   
+   dependencies {
+        classpath 'com.android.tools.build:gradle:8.1.0'  // Use AGP 8.1.0 or higher
+    }
 }
 
 allprojects {
