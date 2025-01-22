@@ -44,7 +44,9 @@ jobs:
       # Install Android SDK Platforms and Tools
       - name: Install Android SDK Platforms and Tools
         run: |
-          echo y | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-33" "build-tools;33.0.2"
+          $sdkmanager = "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          $arguments = "platforms;android-33", "build-tools;33.0.2"
+          & $sdkmanager $arguments | Out-String
 
       # Clean Environment
       - name: Clean Environment
