@@ -4,7 +4,7 @@ allprojects {
         mavenCentral()
     }
      dependencies {
-        classpath 'com.android.tools.build:gradle-8.0.2-all.zip'  // Adjust this version as needed
+        classpath 'com.android.tools.build:gradle-8.0.2'  // Adjust this version as needed
     }
 }
 
